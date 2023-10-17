@@ -2,4 +2,7 @@ module github.com/FranJF/KindleHighlightsKeeper
 
 go 1.21.3
 
-require golang.org/x/net v0.17.0 // indirect
+require (
+	github.com/a-h/templ v0.2.408 // indirect
+	golang.org/x/net v0.17.0 // indirect
+)
