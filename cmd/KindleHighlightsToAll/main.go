@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-    "github.com/FranJF/KindleHighlightsToKeeper/internal/htmltojson"
+    "github.com/FranJF/KindleHighlightsKeeper/internal/htmltojson"
     "strings"
 )
 
@@ -15,7 +15,7 @@ func writeJSON(jsonFileName string, results map[string][]string) error {
 		return err
 	}
 
-    jsonFile, err := os.Create(jsonFileName)
+    jsonFile, err := os.Create("output/"+jsonFileName)
     if err != nil {
         return err
     }
