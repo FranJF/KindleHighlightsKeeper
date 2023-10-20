@@ -1,6 +1,6 @@
 module github.com/FranJF/KindleHighlightsKeeper
 
-go 1.20.3
+go 1.20
 
 require (
 	github.com/a-h/templ v0.2.408 // indirect
