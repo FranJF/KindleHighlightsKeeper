@@ -2,7 +2,6 @@ package htmltojson
 import (
 	"golang.org/x/net/html"
 	"strings"
-    "os"
 )
 
 
@@ -14,13 +13,7 @@ var classNames = map[string]bool{
 }
 
 func ParseHTML(htmlFilePath string) (string, map[string][]string, []string, error) {
-	file, err := os.Open(htmlFilePath)
-	if err != nil {
-		return "", nil, nil, err
-	}
-	defer file.Close()
-
-	doc, err := html.Parse(file)
+	doc, err := html.Parse(strings.NewReader(htmlFilePath))
 	if err != nil {
 		return "", nil, nil, err
 	}
