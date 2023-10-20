@@ -48,6 +48,10 @@ func createTXT(bookTitle string, results map[string][]string, sections[]string) 
     for _, section := range sections {
         txtFile.WriteString(section + "\n")
         for _, note := range results[section] {
+            if strings.Contains(note, "Nota: ") {
+                txtFile.WriteString(note + "\n\n")
+                continue
+            }
             txtFile.WriteString(note + "\n")
         }
         txtFile.WriteString("\n")
@@ -69,6 +73,11 @@ func createMD(bookTitle string, results map[string][]string, sections[]string) e
     for _, section := range sections {
         mdFile.WriteString("## " + section + "\n")
         for _, note := range results[section] {
+            if strings.Contains(note, "Nota: ") {
+                strings.ReplaceAll(note, "Nota: ", "")
+                mdFile.WriteString("> " + note + "\n")
+                continue
+            }
             mdFile.WriteString("* " + note + "\n")
         }
         mdFile.WriteString("\n")

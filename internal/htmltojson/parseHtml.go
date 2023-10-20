@@ -3,7 +3,6 @@ import (
 	"golang.org/x/net/html"
 	"strings"
     "os"
-    "fmt"
 )
 
 
@@ -26,11 +25,12 @@ func ParseHTML(htmlFilePath string) (string, map[string][]string, []string, erro
 		return "", nil, nil, err
 	}
 
-	result := make(map[string][]string)
 	var bookTitle string
 	currentSection := ""
     sections := []string{}
+    data := make(map[string][]string)
 	var findClass func(*html.Node)
+    is_nota := false
 	findClass = func(n *html.Node) {
 		switch {
 		case n.Type == html.ElementNode && hasClass(n, classNames):
@@ -42,10 +42,19 @@ func ParseHTML(htmlFilePath string) (string, map[string][]string, []string, erro
                 if currentSection != "" {
                     sections = append(sections, currentSection)
                 }
-			} else if className == "noteText" && currentSection != "" {
+            } else if className == "noteHeading"{
+                heading := strings.TrimSpace(n.FirstChild.Data)
+                if strings.Contains(heading, "Nota") {
+                    is_nota = true
+                }
+            }else if className == "noteText" && currentSection != "" {
 				if n.FirstChild != nil {
 					noteText := strings.TrimSpace(n.FirstChild.Data)
-					result[currentSection] = append(result[currentSection], noteText)
+                    if is_nota {
+                        noteText = "Nota: " + noteText
+                    }
+                    is_nota = false
+					data[currentSection] = append(data[currentSection], noteText)
 				}
 			}
 		}
@@ -54,8 +63,7 @@ func ParseHTML(htmlFilePath string) (string, map[string][]string, []string, erro
 		}
 	}
 	findClass(doc)
-    fmt.Println(sections)
-	return bookTitle, result, sections, nil
+	return bookTitle, data, sections, nil
 }
 
 func hasClass(n *html.Node, classNames map[string]bool) bool {
